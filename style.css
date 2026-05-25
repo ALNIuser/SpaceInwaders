@@ -1,0 +1,326 @@
+*, *::before, *::after {
+  margin: 0; padding: 0; box-sizing: border-box;
+}
+
+body {
+  background: #000;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Courier New', monospace;
+  touch-action: manipulation;
+  overflow: hidden;
+  position: relative;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+h1 {
+  color: #0ff;
+  text-shadow: 0 0 10px #0ff, 0 0 20px #0ff4;
+  font-size: clamp(1rem, 4.5vw, 1.8rem);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.25em;
+  text-align: center;
+}
+
+canvas {
+  border: 2px solid #0ff6;
+  box-shadow: 0 0 18px #0ff3, inset 0 0 18px #0ff1;
+  border-radius: 10px;
+  display: block;
+  max-width: 100vw;
+  max-height: 68vh;
+  max-height: 68dvh;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ---- Top-right buttons ---- */
+#helpBtn,
+#musicBtn {
+  position: absolute;
+  top: 16px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #0a0a2a;
+  border: 2px solid #0ff6;
+  color: #0ff;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
+  line-height: 1;
+}
+
+#helpBtn { right: 16px; }
+#musicBtn { right: 62px; }
+
+#helpBtn:hover, #musicBtn:hover {
+  background: #0ff2;
+  box-shadow: 0 0 12px #0ff4;
+}
+
+#musicBtn.music-on {
+  border-color: #ff0;
+  color: #ff0;
+  box-shadow: 0 0 10px #ff06;
+  animation: musicPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes musicPulse {
+  0%, 100% { box-shadow: 0 0 8px #ff05; }
+  50% { box-shadow: 0 0 18px #ff09, 0 0 28px #ff03; }
+}
+
+/* ---- Help panel ---- */
+#helpPanel {
+  position: fixed;
+  top: 0; right: -340px;
+  width: 320px; height: 100vh;
+  background: #06061a;
+  border-left: 2px solid #0ff;
+  box-shadow: -5px 0 25px rgba(0,255,255,0.25);
+  z-index: 100;
+  transition: right 0.3s ease;
+  padding: 2rem;
+  color: #ccc;
+  overflow-y: auto;
+}
+
+#helpPanel.active { right: 0; }
+
+#helpContent h2 {
+  color: #0ff;
+  margin-bottom: 1.2rem;
+  font-size: 1.2rem;
+}
+
+#helpContent ul {
+  list-style: none;
+  line-height: 1.7;
+}
+
+#helpContent li {
+  margin-bottom: 0.8rem;
+  padding: 0.5rem;
+  border-left: 2px solid #0ff3;
+  padding-left: 0.8rem;
+}
+
+#helpContent b { color: #0ff; }
+
+@media (pointer: coarse) {
+  #helpPanel {
+    top: auto; bottom: -100%;
+    left: 0; right: 0;
+    width: 100%; height: auto;
+    max-height: 55dvh;
+    border-left: none;
+    border-top: 2px solid #0ff;
+    border-radius: 16px 16px 0 0;
+    padding: 1.5rem;
+    transition: bottom 0.3s ease;
+  }
+  #helpPanel.active { bottom: 0; }
+}
+
+/* ---- Mobile controls ---- */
+.mobile-controls {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: min(98vw, 420px);
+  margin-top: 0.5rem;
+  gap: 0.3rem;
+  flex-wrap: nowrap;
+}
+
+.ctrl-btn {
+  background: #0d0d2e;
+  border: 2px solid #0ff5;
+  color: #0ff;
+  font-size: 1.6rem;
+  padding: 0.3rem 0;
+  border-radius: 14px;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  text-align: center;
+  transition: background 0.1s, transform 0.1s;
+  flex: 1 1 0;
+  min-width: 42px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ctrl-btn:first-child,
+.ctrl-btn:last-child {
+  flex: 0.7 0.7 0;
+  min-width: 48px;
+}
+
+.ctrl-btn:active {
+  background: #0ff3;
+  transform: scale(0.93);
+}
+
+.ctrl-fire { border-color: #f44; color: #f44; }
+.ctrl-fire:active { background: #f442; }
+
+.ctrl-rocket { border-color: #ff0; color: #ff0; }
+.ctrl-rocket:active { background: #ff03; }
+
+.ctrl-pause {
+  border-color: #888; color: #888;
+  font-size: 1.2rem;
+  flex: 0.5 0.5 0;
+  min-width: 36px;
+}
+.ctrl-pause:active { background: #8883; }
+
+@media (pointer: coarse) {
+  .mobile-controls { display: flex; }
+}
+
+/* ---- Game Over panel ---- */
+#gameover-panel {
+  display: none;
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: #000e;
+  border: 2px solid #0ff6;
+  border-radius: 18px;
+  padding: 1.8rem;
+  text-align: center;
+  z-index: 50;
+  color: #ddd;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  min-width: 290px;
+  max-width: 95vw;
+  max-height: 85vh;
+  max-height: 85dvh;
+  overflow-y: auto;
+  box-shadow: 0 0 40px rgba(0,255,255,0.2);
+}
+
+#gameover-panel h2 {
+  color: #f55;
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+#gameover-panel p {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+#finalScore {
+  color: #0ff;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+#gameover-panel input {
+  font-size: 1.1rem;
+  padding: 0.6em;
+  border-radius: 10px;
+  border: 1px solid #0ff6;
+  background: #0a0a20;
+  color: #0ff;
+  margin: 0.5em 0;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#gameover-panel input:focus {
+  border-color: #0ff;
+  box-shadow: 0 0 10px #0ff3;
+}
+
+#saveStatus {
+  font-size: 0.8rem;
+  color: #f80;
+  min-height: 1.2em;
+  margin: 0;
+}
+
+#gameover-panel button {
+  font-size: 1.1rem;
+  padding: 0.6em 1.2em;
+  border-radius: 10px;
+  background: #0ff2;
+  border: 1px solid #0ff6;
+  color: #0ff;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 0.7rem;
+  transition: background 0.2s, transform 0.1s;
+  font-family: 'Courier New', monospace;
+}
+
+#gameover-panel button:hover {
+  background: #0ff3;
+}
+
+#gameover-panel button:active {
+  transform: scale(0.97);
+}
+
+#gameover-panel button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#restartBtn {
+  background: #f553;
+  border-color: #f558;
+  color: #f88;
+}
+
+#restartBtn:hover { background: #f554; }
+
+#leaderboard {
+  margin-top: 0.8rem;
+  text-align: left;
+  font-size: 0.85rem;
+  max-height: 170px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+#leaderboard h3 {
+  text-align: center;
+  color: #0ff;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+#leaderboard ol {
+  padding-left: 1.5rem;
+}
+
+#leaderboard li {
+  margin-bottom: 0.3rem;
+  padding: 0.2rem 0;
+  border-bottom: 1px solid #fff1;
+}
+
+#leaderboard li b { color: #ff0; }
+#leaderboard li small { color: #888; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #0ff4; border-radius: 3px; }
