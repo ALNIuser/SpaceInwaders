@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Space Invaders Pro — аркадный космический шутер с боссами, ракетами и супероружием. Игра на HTML5 Canvas с 8-битным саундтреком Mortal Kombat. Каждые 5 уровней — босс.">
+  <meta name="keywords" content="space invaders, космический шутер, аркада, браузерная игра, ретро, босс, 8-bit, html5, canvas">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Space Invaders Pro — браузерная аркада</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>SPACE INVADERS PRO</h1>
+  <canvas id="gameCanvas" aria-label="Игровое поле"></canvas>
+
+  <button id="helpBtn" title="Помощь">?</button>
+  <button id="musicBtn" title="Музыка">🎵</button>
+
+  <div id="helpPanel">
+    <div id="helpContent">
+      <h2>Управление</h2>
+      <ul>
+        <li><b>Клавиатура:</b><br>
+          ← → / A D — движение<br>
+          ПРОБЕЛ — стрельба<br>
+          R — ракета<br>
+          P / Esc — пауза
+        </li>
+        <li><b>Мобильные кнопки:</b><br>
+          ◀ ▶ — движение<br>
+          🔥 — стрельба<br>
+          🚀 — ракета<br>
+          ⏸ — пауза
+        </li>
+        <li><b>Бонусы:</b><br>
+          🚀 — ракеты (самонаводящиеся, копятся)<br>
+          ⚡ — супероружие (всех врагов)<br>
+          🛡️ — щит (неуязвимость)
+        </li>
+        <li><b>Особое:</b><br>
+          Каждые 5 уровней — босс 👾<br>
+          Ракеты копятся без лимита<br>
+          Рекорды сохраняются локально
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mobile-controls" id="mobileControls">
+    <button class="ctrl-btn" id="btnLeft">◀</button>
+    <button class="ctrl-btn ctrl-fire" id="btnFire">🔥</button>
+    <button class="ctrl-btn ctrl-pause" id="btnPause">⏸</button>
+    <button class="ctrl-btn ctrl-rocket" id="btnRocket">🚀</button>
+    <button class="ctrl-btn" id="btnRight">▶</button>
+  </div>
+
+  <div id="gameover-panel">
+    <h2>💀 Игра окончена</h2>
+    <p>Очки: <span id="finalScore"></span></p>
+    <input type="text" id="playerName" placeholder="Ваше имя" maxlength="50" autocomplete="off">
+    <button id="saveBtn">💾 Сохранить</button>
+    <button id="restartBtn">🔄 Играть снова</button>
+    <div id="leaderboard"></div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
